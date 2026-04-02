@@ -10,6 +10,18 @@
 
 ---
 
+## 📸 Screenshots
+
+### Extension Popup
+![Extension Popup](Screenshot_1.png)
+*Main extension popup with posts export and image download options*
+
+### Floating Button Modal
+![Floating Button Modal](Screenshot_2.png)
+*Integrated modal on Facebook page for quick access*
+
+---
+
 ## 🌐 Language / Idioma
 
 - [🇺🇸 English](#-english)
