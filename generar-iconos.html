@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Generador de Íconos - Facebook Exporter</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 600px;
+      margin: 50px auto;
+      padding: 20px;
+      text-align: center;
+    }
+    h1 { color: #667eea; }
+    .icon-preview {
+      display: inline-block;
+      margin: 20px;
+      padding: 20px;
+      border: 2px solid #667eea;
+      border-radius: 10px;
+    }
+    canvas { display: none; }
+    img { border: 1px solid #ddd; border-radius: 5px; }
+    .status { 
+      margin-top: 20px; 
+      padding: 15px; 
+      border-radius: 8px;
+      background: #e8f5e9;
+      color: #2e7d32;
+    }
+    button {
+      background: #667eea;
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 16px;
+      margin-top: 20px;
+    }
+    button:hover { background: #5568d3; }
+  </style>
+</head>
+<body>
+  <h1>🎨 Generador de Íconos</h1>
+  <p>Facebook Exporter - Código Guerrero Dev</p>
+  
+  <button onclick="generarIconos()">🚀 Generar y Descargar Íconos</button>
+  
+  <div id="previews"></div>
+  <div id="status"></div>
+  
+  <canvas id="canvas"></canvas>
+  
+  <script>
+    function generarIconos() {
+      const sizes = [16, 48, 128];
+      const status = document.getElementById('status');
+      const previews = document.getElementById('previews');
+      
+      status.innerHTML = '⏳ Generando íconos...';
+      previews.innerHTML = '';
+      
+      sizes.forEach((size, index) => {
+        setTimeout(() => {
+          const canvas = document.getElementById('canvas');
+          canvas.width = size;
+          canvas.height = size;
+          const ctx = canvas.getContext('2d');
+          
+          // Fondo degradado
+          const gradient = ctx.createLinearGradient(0, 0, size, size);
+          gradient.addColorStop(0, '#667eea');
+          gradient.addColorStop(1, '#764ba2');
+          ctx.fillStyle = gradient;
+          
+          // Esquinas redondeadas
+          const radius = size / 8;
+          ctx.beginPath();
+          ctx.roundRect(0, 0, size, size, radius);
+          ctx.fill();
+          
+          // Borde blanco sutil
+          ctx.strokeStyle = 'rgba(255,255,255,0.3)';
+          ctx.lineWidth = Math.max(1, size / 32);
+          ctx.stroke();
+          
+          // Sombra interior
+          ctx.shadowColor = 'rgba(0,0,0,0.2)';
+          ctx.shadowBlur = size / 10;
+          ctx.shadowOffsetX = size / 20;
+          ctx.shadowOffsetY = size / 20;
+          
+          // Letra "F" estilizada
+          ctx.shadowColor = 'transparent';
+          ctx.fillStyle = 'white';
+          ctx.font = `bold ${size * 0.55}px Arial, sans-serif`;
+          ctx.textAlign = 'center';
+          ctx.textBaseline = 'middle';
+          ctx.fillText('F', size / 2, size / 2 + size * 0.02);
+          
+          // Descargar
+          const link = document.createElement('a');
+          link.download = `icon${size}.png`;
+          link.href = canvas.toDataURL('image/png');
+          link.click();
+          
+          // Mostrar preview
+          const preview = document.createElement('div');
+          preview.className = 'icon-preview';
+          const img = document.createElement('img');
+          img.src = canvas.toDataURL('image/png');
+          img.width = size * 2;
+          img.height = size * 2;
+          preview.appendChild(img);
+          preview.innerHTML += `<br><strong>icon${size}.png</strong>`;
+          previews.appendChild(preview);
+          
+          console.log(`✅ icon${size}.png generado`);
+          
+          if (index === sizes.length - 1) {
+            status.innerHTML = '✅ ¡Todos los íconos generados exitosamente!<br><small>Los archivos se descargaron automáticamente. Muévelos a la carpeta <code>icons/</code></small>';
+          }
+        }, index * 300);
+      });
+    }
+    
+    // Generar automáticamente al cargar
+    window.onload = () => {
+      setTimeout(generarIconos, 500);
+    };
+  </script>
+</body>
+</html>

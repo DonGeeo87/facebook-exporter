@@ -1,0 +1,35 @@
+# Node modules
+node_modules/
+package-lock.json
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Logs
+*.log
+npm-debug.log*
+
+# Temporary files
+*.tmp
+*.temp
+
+# Documentation files (optional - keep if you want them in repo)
+# ACTUALIZACION_IMAGENES.md
+# FIX_GALERIA_ZIP.md
+# FIX_LIMITES_1000.md
+# VERSION_1.1.0.md
+# SESSION_SUMMARY.md
+
+# Test files (if any)
+*.test.js
+*.spec.js
+coverage/

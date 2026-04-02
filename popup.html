@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Facebook Exporter - Código Guerrero Dev</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      width: 350px;
+      padding: 20px;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: #ffffff;
+    }
+    
+    .header {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    
+    .header h1 {
+      font-size: 18px;
+      font-weight: 600;
+      margin-bottom: 5px;
+    }
+    
+    .header p {
+      font-size: 12px;
+      opacity: 0.9;
+    }
+    
+    .card {
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      border-radius: 12px;
+      padding: 15px;
+      margin-bottom: 15px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+    
+    .option-group {
+      margin-bottom: 12px;
+    }
+    
+    .option-group label {
+      display: flex;
+      align-items: center;
+      font-size: 13px;
+      cursor: pointer;
+    }
+    
+    .option-group input[type="checkbox"] {
+      margin-right: 8px;
+      width: 16px;
+      height: 16px;
+      cursor: pointer;
+    }
+    
+    .option-group select {
+      width: 100%;
+      padding: 8px;
+      margin-top: 5px;
+      border-radius: 6px;
+      border: none;
+      background: rgba(255, 255, 255, 0.9);
+      font-size: 13px;
+      cursor: pointer;
+    }
+    
+    .btn {
+      width: 100%;
+      padding: 12px;
+      border: none;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+    
+    .btn-primary {
+      background: #ffffff;
+      color: #667eea;
+    }
+    
+    .btn-primary:hover:not(:disabled) {
+      background: #f0f0f0;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    }
+    
+    .btn-primary:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+    
+    .btn-secondary {
+      background: rgba(255, 255, 255, 0.2);
+      color: #ffffff;
+      margin-top: 10px;
+    }
+    
+    .btn-secondary:hover:not(:disabled) {
+      background: rgba(255, 255, 255, 0.3);
+    }
+    
+    .progress-container {
+      margin-top: 15px;
+    }
+    
+    .progress-bar {
+      width: 100%;
+      height: 8px;
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 4px;
+      overflow: hidden;
+      margin-bottom: 8px;
+    }
+    
+    .progress-fill {
+      height: 100%;
+      background: #ffffff;
+      border-radius: 4px;
+      transition: width 0.3s ease;
+      width: 0%;
+    }
+    
+    .progress-text {
+      font-size: 12px;
+      text-align: center;
+      opacity: 0.9;
+    }
+    
+    .status {
+      font-size: 12px;
+      text-align: center;
+      padding: 8px;
+      border-radius: 6px;
+      margin-top: 10px;
+      display: none;
+    }
+    
+    .status.success {
+      background: rgba(76, 175, 80, 0.3);
+      display: block;
+    }
+    
+    .status.error {
+      background: rgba(244, 67, 54, 0.3);
+      display: block;
+    }
+    
+    .status.info {
+      background: rgba(33, 150, 243, 0.3);
+      display: block;
+    }
+    
+    .stats {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 10px;
+      margin-top: 15px;
+    }
+    
+    .stat-item {
+      text-align: center;
+      background: rgba(255, 255, 255, 0.1);
+      padding: 10px;
+      border-radius: 8px;
+    }
+    
+    .stat-value {
+      font-size: 18px;
+      font-weight: 700;
+    }
+    
+    .stat-label {
+      font-size: 10px;
+      opacity: 0.8;
+      text-transform: uppercase;
+    }
+    
+    .footer {
+      text-align: center;
+      margin-top: 15px;
+      font-size: 10px;
+      opacity: 0.7;
+    }
+    
+    .spinner {
+      display: inline-block;
+      width: 16px;
+      height: 16px;
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      border-top-color: #ffffff;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+    
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+    
+    .hidden {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h1>📘 Facebook Exporter</h1>
+    <p>Código Guerrero Dev ⚔️</p>
+  </div>
+  
+  <div class="card">
+    <h3 style="font-size: 14px; margin-bottom: 12px; border-bottom: 1px solid rgba(255,255,255,0.2); padding-bottom: 8px;">
+      📊 Exportar Datos
+    </h3>
+    
+    <div class="option-group">
+      <label>
+        <input type="checkbox" id="includeComments">
+        Incluir comentarios (más lento)
+      </label>
+    </div>
+    
+    <div class="option-group">
+      <label for="maxPosts">Máximo de posts:</label>
+      <select id="maxPosts">
+        <option value="20">20 posts</option>
+        <option value="50" selected>50 posts</option>
+        <option value="100">100 posts</option>
+        <option value="200">200 posts</option>
+        <option value="500">500 posts</option>
+        <option value="1000">1000 posts</option>
+      </select>
+    </div>
+    
+    <button id="btnExport" class="btn btn-primary">
+      <span>📥</span>
+      <span>Exportar Posts</span>
+    </button>
+  </div>
+  
+  <div class="card">
+    <h3 style="font-size: 14px; margin-bottom: 12px; border-bottom: 1px solid rgba(255,255,255,0.2); padding-bottom: 8px;">
+      🖼️ Descargar Imágenes
+    </h3>
+    
+    <div class="option-group">
+      <label for="maxImages">Máximo de imágenes:</label>
+      <select id="maxImages">
+        <option value="50">50 imágenes</option>
+        <option value="100" selected>100 imágenes</option>
+        <option value="200">200 imágenes</option>
+        <option value="500">500 imágenes</option>
+        <option value="1000">1000 imágenes</option>
+      </select>
+    </div>
+
+    <div class="option-group">
+      <label>
+        <input type="checkbox" id="includeVideos" checked>
+        Incluir miniaturas de videos
+      </label>
+    </div>
+
+    <div class="option-group">
+      <label>
+        <input type="checkbox" id="downloadZip" checked>
+        Descargar en ZIP (recomendado)
+      </label>
+    </div>
+
+    <button id="btnDownloadImages" class="btn btn-primary">
+      <span>🖼️</span>
+      <span>Descargar Imágenes</span>
+    </button>
+
+    <p style="font-size: 10px; opacity: 0.7; margin-top: 10px; text-align: center;">
+      ⚠️ ZIP incluye todas las imágenes + metadata. Sin ZIP descarga archivos separados.
+    </p>
+  </div>
+  
+  <button id="btnStop" class="btn btn-secondary hidden">
+    <span>⏹️</span>
+    <span>Detener</span>
+  </button>
+  
+  <div class="progress-container hidden" id="progressContainer">
+    <div class="progress-bar">
+      <div class="progress-fill" id="progressFill"></div>
+    </div>
+    <div class="progress-text" id="progressText">Post 0/50...</div>
+  </div>
+  
+  <div class="stats hidden" id="statsContainer">
+    <div class="stat-item">
+      <div class="stat-value" id="statPosts">0</div>
+      <div class="stat-label">Posts</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-value" id="statPhotos">0</div>
+      <div class="stat-label">Fotos</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-value" id="statVideos">0</div>
+      <div class="stat-label">Videos</div>
+    </div>
+  </div>
+  
+  <div class="status" id="statusMessage"></div>
+  
+  <div class="footer">
+    Solo para páginas administradas<br>
+    v1.0.0 - Manifest V3
+  </div>
+  
+  <script src="popup.js"></script>
+</body>
+</html>
